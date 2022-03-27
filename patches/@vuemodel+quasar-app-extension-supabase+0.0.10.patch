@@ -1,0 +1,47 @@
+diff --git a/node_modules/@vuemodel/quasar-app-extension-supabase/src/boot/vue-model-supabase-install.js b/node_modules/@vuemodel/quasar-app-extension-supabase/src/boot/vue-model-supabase-install.js
+index 4f487b4..8f8cfe4 100644
+--- a/node_modules/@vuemodel/quasar-app-extension-supabase/src/boot/vue-model-supabase-install.js
++++ b/node_modules/@vuemodel/quasar-app-extension-supabase/src/boot/vue-model-supabase-install.js
+@@ -1,4 +1,4 @@
+-import { SupabasePlugin } from '@vuemodel/supabase'
++import { SupabasePlugin } from '@vuemodel/supabase/src/main'
+ import supabaseConfig from 'app/config/supabase.js'
+ 
+ export default ({ app }) => {
+diff --git a/node_modules/@vuemodel/quasar-app-extension-supabase/src/index.js b/node_modules/@vuemodel/quasar-app-extension-supabase/src/index.js
+index d935922..3ef2ef2 100644
+--- a/node_modules/@vuemodel/quasar-app-extension-supabase/src/index.js
++++ b/node_modules/@vuemodel/quasar-app-extension-supabase/src/index.js
+@@ -1,8 +1,12 @@
+-var fs = require('fs')
+-
+ module.exports = function (api) {
+   api.compatibleWith('quasar', '^2.0.0')
+-  api.compatibleWith('@quasar/app', '^3.0.0')
++
++  if (api.hasVite === true) {
++    api.compatibleWith('@quasar/app-vite', '^1.0.0-beta.0')
++  } else {
++    // api.hasWebpack === true
++    api.compatibleWith('@quasar/app-webpack', '^3.0.0')
++  }
+ 
+   // ensure boot file is registered
+   api.extendQuasarConf((conf, api) => {
+diff --git a/node_modules/@vuemodel/quasar-app-extension-supabase/src/install.js b/node_modules/@vuemodel/quasar-app-extension-supabase/src/install.js
+index 76061b8..34b6d19 100644
+--- a/node_modules/@vuemodel/quasar-app-extension-supabase/src/install.js
++++ b/node_modules/@vuemodel/quasar-app-extension-supabase/src/install.js
+@@ -4,7 +4,7 @@ module.exports = function (api) {
+   // There may already be a config file for supabase
+   // if @vueauth/supabase has created it already.
+   // We check if it exists before rendering
+-  const dir = api.resolve.appDir
++  const dir = api.appDir
+   const configFile = dir + '/config/supabase.js'
+   if(!fs.existsSync(configFile)) {
+     api.render('./templates')
+diff --git a/node_modules/@vuemodel/quasar-app-extension-supabase/src/templates/src/config/supabase.js b/node_modules/@vuemodel/quasar-app-extension-supabase/src/templates/config/supabase.js
+similarity index 100%
+rename from node_modules/@vuemodel/quasar-app-extension-supabase/src/templates/src/config/supabase.js
+rename to node_modules/@vuemodel/quasar-app-extension-supabase/src/templates/config/supabase.js
